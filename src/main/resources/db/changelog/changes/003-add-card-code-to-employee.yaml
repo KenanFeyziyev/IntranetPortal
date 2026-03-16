@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-add-card-code-to-employees
+      author: kenan
+      changes:
+
+        - addColumn:
+            tableName: employees
+            columns:
+              - column:
+                  name: card_code
+                  type: VARCHAR(100)
+
+        - addUniqueConstraint:
+            tableName: employees
+            columnNames: card_code
+            constraintName: uk_employee_card_code

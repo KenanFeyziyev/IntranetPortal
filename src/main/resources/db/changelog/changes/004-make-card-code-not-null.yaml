@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-make-card-code-not-null
+      author: kenan
+      changes:
+        - addNotNullConstraint:
+            tableName: employees
+            columnName: card_code
+            columnDataType: VARCHAR(100)
