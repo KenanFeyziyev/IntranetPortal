@@ -49,3 +49,8 @@ build/
 
 # Logs
 *.log
+
+### Environment & Secrets ###
+.env
+.env.local
+.env.*.local

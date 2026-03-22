@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: intranet-portal
+    security:
+      jwt:
+        secret-key: ${JWT_SECRET_KEY}
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/intranet_portal
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+
+logging:
+  level:
+    liquibase: INFO

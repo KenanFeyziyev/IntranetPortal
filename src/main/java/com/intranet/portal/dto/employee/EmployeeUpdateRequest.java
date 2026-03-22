@@ -1,5 +1,6 @@
 package com.intranet.portal.dto.employee;
 
+import com.intranet.portal.entity.Role;
 import jakarta.validation.constraints.Email;
 
 import java.time.LocalDate;
@@ -20,6 +21,8 @@ public record EmployeeUpdateRequest(
 
         Long departmentId,
         Long positionId,
+
+        Role role,
 
         Boolean isActive
 ) {

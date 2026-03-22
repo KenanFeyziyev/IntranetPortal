@@ -1,5 +1,7 @@
 package com.intranet.portal.dto.employee;
 
+import com.intranet.portal.entity.Role;
+
 import java.time.LocalDate;
 
 public record EmployeeResponse(
@@ -19,6 +21,8 @@ public record EmployeeResponse(
         String departmentName,
 
         Long positionId,
-        String positionName
+        String positionName,
+
+        Role role
 ) {
 }

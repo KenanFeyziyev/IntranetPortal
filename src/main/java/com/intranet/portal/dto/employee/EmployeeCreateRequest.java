@@ -1,5 +1,6 @@
 package com.intranet.portal.dto.employee;
 
+import com.intranet.portal.entity.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -22,6 +23,8 @@ public record EmployeeCreateRequest(
 
         @NotNull Long departmentId,
         @NotNull Long positionId,
+
+        @NotNull Role role,
 
         Boolean isActive
 ) {

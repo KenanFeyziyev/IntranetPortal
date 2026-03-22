@@ -3,6 +3,8 @@ package com.intranet.portal.entity;
 import com.intranet.portal.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -40,6 +42,10 @@ public class Employee extends BaseEntity {
 
     @Column(nullable = false)
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
 
     @Column(name = "card_code", unique = true)
     private String cardCode;

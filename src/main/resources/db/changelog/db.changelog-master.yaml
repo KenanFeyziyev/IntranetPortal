@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/changes/003-add-card-code-to-employee.yaml
   - include:
       file: db/changelog/changes/004-make-card-code-not-null.yaml
+  - include:
+      file: db/changelog/changes/005-add-role-to-employee.yaml

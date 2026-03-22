@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-add-role-to-employee
+      author: kenan
+      changes:
+        - addColumn:
+            tableName: employees
+            columns:
+              - column:
+                  name: role
+                  type: VARCHAR(50)
+                  defaultValue: ROLE_USER
+
+        - update:
+            tableName: employees
+            columns:
+              - column:
+                  name: role
+                  value: ROLE_USER
+
+        - addNotNullConstraint:
+            tableName: employees
+            columnName: role
+            columnDataType: VARCHAR(50)
