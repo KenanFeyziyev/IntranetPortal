@@ -3,6 +3,7 @@ package com.intranet.portal.repository;
 import com.intranet.portal.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
@@ -23,4 +24,12 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
        where e.id = :id
        """)
     Optional<Employee> findByIdWithDepartmentAndPosition(Long id);
+
+    @Query("""
+       select e from Employee e
+       left join fetch e.department
+       left join fetch e.position
+       where e.email = :email
+       """)
+    Optional<Employee> findByEmailWithDepartmentAndPosition(@Param("email") String email);
 }

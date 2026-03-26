@@ -11,6 +11,8 @@ import java.util.Optional;
 
 public interface WorkPermitRepository extends JpaRepository<WorkPermit, Long> {
 
+    List<WorkPermit> findAllByEmployeeEmailOrderByIdDesc(String email);
+
     @Query("""
            select w from WorkPermit w
            left join fetch w.employee

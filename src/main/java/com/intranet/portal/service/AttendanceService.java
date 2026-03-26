@@ -23,4 +23,6 @@ public interface AttendanceService {
     List<EmployeeResponse> getLateEmployees(LocalDate date);
 
     void delete(Long id);
+
+    AttendanceResponse checkInForCurrentUser(String email);
 }

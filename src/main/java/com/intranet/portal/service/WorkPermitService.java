@@ -15,6 +15,8 @@ public interface WorkPermitService {
 
     Long create(WorkPermitCreateRequest request);
 
+    Long createForCurrentUser(String email, WorkPermitCreateRequest request);
+
     WorkPermitResponse update(Long id, WorkPermitUpdateRequest request);
 
     WorkPermitResponse approve(Long id, WorkPermitApproveRequest request);
@@ -22,4 +24,6 @@ public interface WorkPermitService {
     void delete(Long id);
 
     Map<String, String> getTotalPermitDuration();
+
+    List<WorkPermitResponse> getMyWorkPermits(String email);
 }

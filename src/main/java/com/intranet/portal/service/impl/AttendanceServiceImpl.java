@@ -147,4 +147,26 @@ public class AttendanceServiceImpl implements AttendanceService {
                 .map(attendance -> employeeMapper.toResponse(attendance.getEmployee()))
                 .toList();
     }
+
+    @Override
+    public AttendanceResponse checkInForCurrentUser(String email) {
+        Employee employee = employeeRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("Employee not found: " + email));
+
+        LocalDate today = LocalDate.now();
+
+        attendanceRepository.findTodayAttendance(employee.getId(), today)
+                .ifPresent(attendance -> {
+                    throw new BadRequestException("Attendance already exists for today");
+                });
+
+        Attendance attendance = Attendance.builder()
+                .employee(employee)
+                .actionDate(LocalDateTime.now())
+                .build();
+
+        Attendance saved = attendanceRepository.save(attendance);
+
+        return attendanceMapper.toResponse(saved);
+    }
 }

@@ -124,6 +124,35 @@ public class WorkPermitServiceImpl implements WorkPermitService {
     }
 
     @Override
+    public Long createForCurrentUser(String email, WorkPermitCreateRequest request) {
+        log.info("Creating work permit for current user with email: {}", email);
+
+        Employee employee = employeeRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("Employee not found: " + email));
+
+        validateDates(request.startDate(), request.endDate());
+
+        WorkPermit workPermit = workPermitMapper.toEntity(request);
+        workPermit.setEmployee(employee);
+        workPermit.setIsApproved(false);
+        workPermit.setApprovedDate(null);
+        workPermit.setApprovedBy(null);
+        workPermit.setIsDeleted(false);
+        workPermit.setPermitDate(LocalDateTime.now());
+        workPermit.setPermitDurationInMinutes(
+                (int) Duration.between(request.startDate(), request.endDate()).toMinutes()
+        );
+
+        WorkPermit saved = workPermitRepository.save(workPermit);
+
+        log.info("Work permit created successfully for current user. Employee id: {}, work permit id: {}",
+                employee.getId(), saved.getId());
+
+        return saved.getId();
+    }
+
+
+    @Override
     public WorkPermitResponse approve(Long id, WorkPermitApproveRequest request) {
 
         log.info("Approving work permit with id: {}", id);
@@ -166,6 +195,16 @@ public class WorkPermitServiceImpl implements WorkPermitService {
 
         log.info("Work permit marked as deleted with id: {}", id);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<WorkPermitResponse> getMyWorkPermits(String email) {
+        return workPermitRepository.findAllByEmployeeEmailOrderByIdDesc(email)
+                .stream()
+                .map(workPermitMapper::toResponse)
+                .toList();
+    }
+
 
     @Override
     @Transactional(readOnly = true)

@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,14 @@ public class WorkPermitController {
         return workPermitService.create(request);
     }
 
+    @PostMapping("/me")
+    public Long createForCurrentUser(Authentication authentication,
+                                     @RequestBody @Valid WorkPermitCreateRequest request) {
+        String email = authentication.getName();
+        log.info("HTTP POST /api/work-permits/me called by user: {}", email);
+        return workPermitService.createForCurrentUser(email, request);
+    }
+
     @PutMapping("/{id}")
     public WorkPermitResponse update(@PathVariable Long id,
                                      @RequestBody @Valid WorkPermitUpdateRequest request) {
@@ -59,9 +68,16 @@ public class WorkPermitController {
         workPermitService.delete(id);
     }
 
+    @GetMapping("/my")
+    public List<WorkPermitResponse> getMyWorkPermits(Authentication authentication) {
+        String email = authentication.getName();
+        return workPermitService.getMyWorkPermits(email);
+    }
+
     @GetMapping("/monthly-duration")
     public Map<String, String> getTotalPermitDuration() {
         log.info("HTTP GET /api/work-permits/monthly-duration called");
         return workPermitService.getTotalPermitDuration();
     }
+
 }

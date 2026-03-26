@@ -1,5 +1,6 @@
 package com.intranet.portal.controller;
 
+import com.intranet.portal.dto.birthday.BirthdayCelebrantResponse;
 import com.intranet.portal.dto.employee.EmployeeCreateRequest;
 import com.intranet.portal.dto.employee.EmployeeResponse;
 import com.intranet.portal.dto.employee.EmployeeUpdateRequest;
@@ -8,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -57,8 +59,13 @@ public class EmployeeController {
     }
 
     @GetMapping("/birthdays/this-month")
-    public List<String> birthdaysThisMonth() {
+    public List<BirthdayCelebrantResponse> birthdaysThisMonth() {
         log.info("HTTP GET /api/employees/birthdays/this-month called");
         return employeeService.getBirthdayCelebrantsThisMonth();
+    }
+
+    @GetMapping("/me")
+    public EmployeeResponse getCurrentUser(Authentication authentication) {
+        return employeeService.getCurrentUser(authentication.getName());
     }
 }

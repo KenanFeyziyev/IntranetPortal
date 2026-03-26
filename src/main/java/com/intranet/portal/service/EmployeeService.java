@@ -1,5 +1,6 @@
 package com.intranet.portal.service;
 
+import com.intranet.portal.dto.birthday.BirthdayCelebrantResponse;
 import com.intranet.portal.dto.employee.EmployeeCreateRequest;
 import com.intranet.portal.dto.employee.EmployeeResponse;
 import com.intranet.portal.dto.employee.EmployeeUpdateRequest;
@@ -21,5 +22,9 @@ public interface EmployeeService {
 
     BigDecimal calculateNetSalary(BigDecimal grossSalary);
 
-    List<String> getBirthdayCelebrantsThisMonth();
+    //List<String> getBirthdayCelebrantsThisMonth();
+
+    List<BirthdayCelebrantResponse> getBirthdayCelebrantsThisMonth();
+
+    EmployeeResponse getCurrentUser(String email);
 }

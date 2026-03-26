@@ -9,6 +9,6 @@ public record WorkPermitCreateRequest(
         @NotBlank String reason,
         @NotNull LocalDateTime startDate,
         @NotNull LocalDateTime endDate,
-        @NotNull Long employeeId
+        Long employeeId
 ) {
 }

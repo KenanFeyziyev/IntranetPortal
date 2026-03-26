@@ -17,9 +17,10 @@ public class JwtService {
     @Value("${spring.application.security.jwt.secret-key}")
     private String secretKey;
 
-    public String generateToken(String email) {
+    public String generateToken(String email, String role) {
         return Jwts.builder()
                 .setSubject(email)
+                .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .signWith(getSignInKey())

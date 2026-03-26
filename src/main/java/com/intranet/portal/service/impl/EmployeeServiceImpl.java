@@ -1,5 +1,6 @@
 package com.intranet.portal.service.impl;
 
+import com.intranet.portal.dto.birthday.BirthdayCelebrantResponse;
 import com.intranet.portal.dto.employee.EmployeeCreateRequest;
 import com.intranet.portal.dto.employee.EmployeeResponse;
 import com.intranet.portal.dto.employee.EmployeeUpdateRequest;
@@ -193,7 +194,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<String> getBirthdayCelebrantsThisMonth() {
+    public List<BirthdayCelebrantResponse> getBirthdayCelebrantsThisMonth() {
         log.info("Fetching birthday celebrants for current month");
 
         int month = LocalDate.now().getMonthValue();
@@ -203,12 +204,37 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .filter(e -> e.getBirthDate() != null && e.getBirthDate().getMonthValue() == month)
                 .map(e -> {
                     int age = today.getYear() - e.getBirthDate().getYear();
-                    String ageString =
-                            (age % 10 == 0) ? "qızıl yubley" :
-                                    (age % 10 == 5) ? "gümüş yubley" :
-                                            "adi yaş";
-                    return e.getFirstName() + "'in bu ay ad günüdür. " + ageString + " yaş";
+
+                    String ageCategory =
+                            (age % 10 == 0) ? "QIZIL_YUBILEY" :
+                                    (age % 10 == 5) ? "GUMUS_YUBILEY" :
+                                            "ADI_YAS";
+
+                    String message =
+                            switch (ageCategory) {
+                                case "QIZIL_YUBILEY" -> "Qızıl yubiley yaş qrupu";
+                                case "GUMUS_YUBILEY" -> "Gümüş yubiley yaş qrupu";
+                                default -> "Adi yaş qrupu";
+                            };
+
+                    return new BirthdayCelebrantResponse(
+                            e.getId(),
+                            e.getFirstName() + " " + e.getLastName(),
+                            e.getBirthDate(),
+                            age,
+                            ageCategory,
+                            message
+                    );
                 })
                 .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public EmployeeResponse getCurrentUser(String email) {
+        Employee employee = employeeRepository.findByEmailWithDepartmentAndPosition(email)
+                .orElseThrow(() -> new NotFoundException("Employee not found: " + email));
+
+        return employeeMapper.toResponse(employee);
     }
 }

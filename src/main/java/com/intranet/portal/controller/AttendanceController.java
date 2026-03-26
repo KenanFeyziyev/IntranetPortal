@@ -9,6 +9,7 @@ import com.intranet.portal.service.AttendanceService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -44,6 +45,13 @@ public class AttendanceController {
     public AttendanceResponse checkIn(@RequestBody @Valid AttendanceCheckInRequest request) {
         log.info("HTTP POST /api/attendances/check-in called");
         return attendanceService.checkIn(request);
+    }
+
+    @PostMapping("/check-in/me")
+    public AttendanceResponse checkInCurrentUser(Authentication authentication) {
+        String email = authentication.getName();
+        log.info("HTTP POST /api/attendances/check-in/me called by user: {}", email);
+        return attendanceService.checkInForCurrentUser(email);
     }
 
     @PutMapping("/{id}")

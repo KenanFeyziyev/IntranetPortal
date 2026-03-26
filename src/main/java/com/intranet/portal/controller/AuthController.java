@@ -21,14 +21,22 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody @Valid LoginRequest request) {
 
-        authenticationManager.authenticate(
+        var authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.email(),
                         request.password()
                 )
         );
 
-        String token = jwtService.generateToken(request.email());
+        var user = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+
+        String role = user.getAuthorities()
+                .stream()
+                .findFirst()
+                .get()
+                .getAuthority(); // məsələn ROLE_ADMIN
+
+        String token = jwtService.generateToken(request.email(), role);
 
         return ResponseEntity.ok(new AuthResponse(token));
     }
