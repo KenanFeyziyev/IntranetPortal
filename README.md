@@ -14,6 +14,9 @@ A scalable and modular **Spring Boot REST API** designed for managing employees,
 This project is built using **clean architecture principles** and follows a layered structure (Controller → Service → Repository).
 It simulates a real-world intranet backend system with advanced business logic beyond basic CRUD operations.
 
+👉 Frontend Application:
+https://github.com/KenanFeyziyev/IntranetPortal-Frontend
+
 ---
 
 ## ✨ Features
